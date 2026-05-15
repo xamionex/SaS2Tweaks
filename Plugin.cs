@@ -9,7 +9,8 @@ using HarmonyLib;
 namespace SaS2Tweaks;
 
 [BepInPlugin(PluginInfo.PluginGuid, PluginInfo.PluginName, PluginInfo.PluginVersion)]
-[BepInDependency("amione.SaS2ModOptions")]
+[BepInDependency("amione.SaS2ModOptions", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("amione.SaS2DevTools", BepInDependency.DependencyFlags.SoftDependency)]
 // ReSharper disable once ClassNeverInstantiated.Global
 public class SaS2Tweaks : BasePlugin
 {
@@ -132,6 +133,10 @@ public class SaS2Tweaks : BasePlugin
             "P2 Aims Camera", order += 1);
         SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.CameraPriority, PluginInfo.PluginName,
             "Camera Priority", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player1MovesCameraWhenAiming, PluginInfo.PluginName,
+            "P1 Moves Camera When Aiming", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player2MovesCameraWhenAiming, PluginInfo.PluginName,
+            "P2 Moves Camera When Aiming", order += 1);
     }
 
     public override bool Unload()

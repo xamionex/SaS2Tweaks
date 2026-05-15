@@ -61,15 +61,34 @@ public static class CoopPatchHelpers
 
     // Camera aim scale
     /// Runtime multiplier for P1's look-stick camera pan.<br />
-    /// Vanilla = 500 f; returns 0 when Player1AimsCamera is false.<br />
-    public static float GetP1LookScale() => GlobalSettings.Player1AimsCamera?.Value != false ? 500f : 0f;
+    /// Vanilla = 500 f; returns 0 when Player1AimsCamera is false or when the player is aiming
+    /// and Player1MovesCameraWhenAiming is false.
+    public static float GetP1LookScale()
+    {
+        // If aiming is active, and we don't want camera movement while aiming, suppress it.
+        var mainChar = GetCharacter(GetMainPlayer());
+        if (mainChar != null && mainChar.draw.aiming && 
+            GlobalSettings.Player1MovesCameraWhenAiming?.Value == false)
+            return 0f;
+
+        // Otherwise use existing logic: return 500f if Player1AimsCamera is true else 0f.
+        return GlobalSettings.Player1AimsCamera?.Value != false ? 500f : 0f;
+    }
 
     /// Adds Player 2's right-stick contribution to the camera-target vector.<br />
     /// No-op unless Player2AimsCamera is true and <paramref name="char2"/> is alive.<br />
-    /// Uses the same dead-zone clamp and 500 f scale as P1.<br />
+    /// Also suppressed if Player2 is aiming and Player2MovesCameraWhenAiming is false.<br />
+    /// Uses the same dead-zone clamp and 500 f scale as P1.
     public static Vector2 AddP2LookVec(Vector2 vector, Character char2)
     {
-        if (GlobalSettings.Player2AimsCamera?.Value != true || char2 == null) return vector;
+        // If P2 is aiming and we don't want camera movement while aiming, skip addition.
+        if (char2 != null && char2.draw.aiming && 
+            GlobalSettings.Player2MovesCameraWhenAiming?.Value == false)
+            return vector;
+
+        // Otherwise add
+        if (GlobalSettings.Player2AimsCamera?.Value != true || char2 == null) 
+            return vector;
         var lv = char2.keys.lookVec;
         if (lv.X is > -0.1f and < 0.1f) lv.X = 0f;
         if (lv.Y is > -0.1f and < 0.1f) lv.Y = 0f;

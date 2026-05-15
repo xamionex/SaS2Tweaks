@@ -8,14 +8,23 @@ public enum CameraPriorityMode
 {
     /// Camera centers between both players (vanilla behavior).
     Midpoint,
+
     /// Camera follows Player 1.
     Player1,
+
     /// Camera follows Player 2.
     Player2
 }
 
 public static class GlobalSettings
 {
+    /// When true, aiming with a ranged weapon moves the camera toward the aim direction (vanilla).
+    /// When false, the camera stays fixed on the player.
+    public static ConfigEntry<bool> Player1MovesCameraWhenAiming;
+
+    /// Same for Player 2 in local co-op.
+    public static ConfigEntry<bool> Player2MovesCameraWhenAiming;
+
     /// When true, Player 2 can walk through layer-change doors independently.
     /// Doing so teleports Player 1 to Player 2's new position instead of
     /// resetting Player 2 back to Player 1.
@@ -101,8 +110,8 @@ public static class GlobalSettings
         if (MouseCursorInversionDisabled?.Value != true)
             return vanillaAngle;
 
-        const float rightSideAngle = -0.7853982f;   // -π/4
-        const float leftSideSubtract = 1.570796f;   //  π/2
+        const float rightSideAngle = -0.7853982f; // -π/4
+        const float leftSideSubtract = 1.570796f; //  π/2
 
         // If this is the right-side constant, return the fixed angle.
         if (Math.Abs(vanillaAngle - rightSideAngle) < 0.0001f)
@@ -210,5 +219,11 @@ public static class GlobalSettings
             "When true, Player 2's right stick also pans the shared camera while aiming. Has no effect outside local co-op, or when Player 2 is dead.");
         CameraPriority = cfg.Bind("Camera", "Camera Priority", CameraPriorityMode.Midpoint,
             "Controls which player the co-op camera centres on.\n Midpoint, vanilla: halfway between both players.\n Player1, camera follows Player 1.\n Player2, camera follows Player 2.");
+
+        Player1MovesCameraWhenAiming = cfg.Bind("Camera", "P1 Moves Camera When Aiming", false,
+            "When true, aiming a bow moves the camera toward the aim direction.\nFalse keeps the camera fixed on the player.");
+
+        Player2MovesCameraWhenAiming = cfg.Bind("Camera", "P2 Moves Camera When Aiming", false,
+            "When true, aiming a bow moves the camera toward the aim direction.\nFalse keeps the camera fixed on the player.");
     }
 }
