@@ -3,8 +3,36 @@ using BepInEx.Configuration;
 
 namespace SaS2Tweaks;
 
+/// Which player the camera focuses on in local co-op.
+public enum CameraPriorityMode
+{
+    /// Camera centers between both players (vanilla behavior).
+    Midpoint,
+    /// Camera follows Player 1.
+    Player1,
+    /// Camera follows Player 2.
+    Player2
+}
+
 public static class GlobalSettings
 {
+    /// When true, Player 2 can walk through layer-change doors independently.
+    /// Doing so teleports Player 1 to Player 2's new position instead of
+    /// resetting Player 2 back to Player 1.
+    public static ConfigEntry<bool> P2CanTriggerDoors;
+
+    /// When true, Player 1's right-stick aim offsets the camera (vanilla).
+    /// Set false to stop P1's aim from panning the view.
+    public static ConfigEntry<bool> Player1AimsCamera;
+
+    /// When true, Player 2's right-stick aim also offsets the camera.
+    /// Has no effect outside local co-op, or when Player 2 is dead.
+    public static ConfigEntry<bool> Player2AimsCamera;
+
+    /// Controls which player the camera centres on in local co-op.
+    /// Midpoint = vanilla (between both); Player1 = follow P1; Player2 = follow P2.
+    public static ConfigEntry<CameraPriorityMode> CameraPriority;
+
     // Stat Regen
     public static ConfigEntry<float> HealthRegenRate;
     public static ConfigEntry<float> StaminaRegenRate;
@@ -85,9 +113,8 @@ public static class GlobalSettings
         return Math.Abs(vanillaAngle - leftSideSubtract) < 0.0001f ? 0f : vanillaAngle;
     }
 
-    /// Returns the configured drop-rate multiplier (clamped ≥ 0).
-    public static float GetDropMultiplier()
-        => DropRateMultiplier?.Value is float v and > 0f ? v : 1f;
+    /// Returns the configured drop-rate multiplier (clamped >= 0).
+    public static float GetDropMultiplier() => DropRateMultiplier?.Value is { } v and > 0f ? v : 1f;
 
     public static void Bind(ConfigFile cfg)
     {
@@ -170,5 +197,18 @@ public static class GlobalSettings
         // Debug
         DebugInfoEnabled = cfg.Bind("Debug", "Show Debug Info", false,
             "Draws regen timer values on screen.");
+
+        // Co-op
+        P2CanTriggerDoors = cfg.Bind("Co-op", "P2 Can Trigger Doors", true,
+            "When enabled, Player 2 can walk through layer-change doors independently. Player 1 is teleported to Player 2's destination instead of P2 being snapped back.");
+
+        // Camera
+        Player1AimsCamera = cfg.Bind("Camera", "Player1 Aims Camera", true,
+            "When true (vanilla), Player 1's right stick pans the camera while aiming. " +
+            "Set false to prevent P1's aim from moving the view.");
+        Player2AimsCamera = cfg.Bind("Camera", "Player2 Aims Camera", false,
+            "When true, Player 2's right stick also pans the shared camera while aiming. Has no effect outside local co-op, or when Player 2 is dead.");
+        CameraPriority = cfg.Bind("Camera", "Camera Priority", CameraPriorityMode.Midpoint,
+            "Controls which player the co-op camera centres on.\n Midpoint, vanilla: halfway between both players.\n Player1, camera follows Player 1.\n Player2, camera follows Player 2.");
     }
 }

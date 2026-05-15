@@ -120,6 +120,18 @@ public class SaS2Tweaks : BasePlugin
         // Debug
         SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.DebugInfoEnabled, PluginInfo.PluginName,
             "Debug Overlay", order += 1);
+
+        // Co-op
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.P2CanTriggerDoors, PluginInfo.PluginName,
+            "P2 Can Trigger Doors", order += 1);
+
+        // Camera
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player1AimsCamera, PluginInfo.PluginName,
+            "P1 Aims Camera", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player2AimsCamera, PluginInfo.PluginName,
+            "P2 Aims Camera", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.CameraPriority, PluginInfo.PluginName,
+            "Camera Priority", order += 1);
     }
 
     public override bool Unload()

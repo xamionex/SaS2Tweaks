@@ -5,14 +5,9 @@
         <AssemblyName>amione.SaS2Tweaks</AssemblyName>
         <Product>SaS2Tweaks</Product>
         <ProductDescription>Adds options to tweak stats and mechanics in Salt and Sacrifice, configurable using Mod Options</ProductDescription>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
-        <RestoreAdditionalProjectSources>
-            https://api.nuget.org/v3/index.json;
-            https://nuget.bepinex.dev/v3/index.json;
-            https://nuget.samboy.dev/v3/index.json
-        </RestoreAdditionalProjectSources>
         <RootNamespace>$(Product)</RootNamespace>
         <DebugType>embedded</DebugType>
     </PropertyGroup>
