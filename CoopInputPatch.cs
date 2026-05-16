@@ -105,15 +105,15 @@ internal static class CoopInputPatch
             TogglePlayerAimsCamera(0);
         }
 
-        // KB: F3 toggles priority for Player 1
-        if (KSingle(ks, Keys.F3) && now - _timeSinceLastToggle >= ThrottleMs)
+        // KB: F2 toggles priority for Player 1
+        if (KSingle(ks, Keys.F2) && now - _timeSinceLastToggle >= ThrottleMs)
         {
             _timeSinceLastToggle = now;
             TogglePriorityForPlayer(0);
         }
 
-        // KB: F4 cycles camera priority
-        if (KSingle(ks, Keys.F4) && now - _timeSinceLastToggle >= ThrottleMs)
+        // KB: F3 cycles camera priority
+        if (KSingle(ks, Keys.F3) && now - _timeSinceLastToggle >= ThrottleMs)
         {
             _timeSinceLastToggle = now;
             CycleCameraPriority();

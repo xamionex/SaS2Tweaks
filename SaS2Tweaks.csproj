@@ -5,7 +5,7 @@
         <AssemblyName>amione.SaS2Tweaks</AssemblyName>
         <Product>SaS2Tweaks</Product>
         <ProductDescription>Adds options to tweak stats and mechanics in Salt and Sacrifice, configurable using Mod Options</ProductDescription>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
         <RootNamespace>$(Product)</RootNamespace>
