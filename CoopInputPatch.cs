@@ -40,12 +40,8 @@ internal static class CoopInputPatch
         return false;
     }
 
-    private static float _lastToggleTime;
-    private const float ThrottleMs = 500f;
-
-    // Separate throttles for aim toggles
-    private static float _lastToggleP1AimTime;
-    private static float _lastToggleP2AimTime;
+    private static float _timeSinceLastToggle;
+    private const float ThrottleMs = 250f;
     private static string _statusMessage = "";
     private static float _messageEndTime;
 
@@ -103,23 +99,23 @@ internal static class CoopInputPatch
         var ks = GlobalInputMgr.ks;
 
         // F1 toggles Player1AimsCamera
-        if (KSingle(ks, Keys.F1) && now - _lastToggleP1AimTime >= ThrottleMs)
+        if (KSingle(ks, Keys.F1) && now - _timeSinceLastToggle >= ThrottleMs)
         {
-            _lastToggleP1AimTime = now;
+            _timeSinceLastToggle = now;
             TogglePlayerAimsCamera(0);
         }
 
         // KB: F3 toggles priority for Player 1
-        if (KSingle(ks, Keys.F3) && now - _lastToggleTime >= ThrottleMs)
+        if (KSingle(ks, Keys.F3) && now - _timeSinceLastToggle >= ThrottleMs)
         {
-            _lastToggleTime = now;
+            _timeSinceLastToggle = now;
             TogglePriorityForPlayer(0);
         }
 
         // KB: F4 cycles camera priority
-        if (KSingle(ks, Keys.F4) && now - _lastToggleTime >= ThrottleMs)
+        if (KSingle(ks, Keys.F4) && now - _timeSinceLastToggle >= ThrottleMs)
         {
-            _lastToggleTime = now;
+            _timeSinceLastToggle = now;
             CycleCameraPriority();
         }
 
@@ -136,23 +132,23 @@ internal static class CoopInputPatch
             var rightShoulderPressed = gp.Buttons.RightShoulder == ButtonState.Pressed;
 
             // RSC + LT = toggle priority for this player
-            if (rightStickPressed && leftTriggerPressed && now - _lastToggleTime >= ThrottleMs)
+            if (rightStickPressed && leftTriggerPressed && now - _timeSinceLastToggle >= ThrottleMs)
             {
-                _lastToggleTime = now;
+                _timeSinceLastToggle = now;
                 TogglePriorityForPlayer(playerIdx);
             }
 
             // RSC + RT = cycle camera priority
-            if (rightStickPressed && rightTriggerPressed && now - _lastToggleTime >= ThrottleMs)
+            if (rightStickPressed && rightTriggerPressed && now - _timeSinceLastToggle >= ThrottleMs)
             {
-                _lastToggleTime = now;
+                _timeSinceLastToggle = now;
                 CycleCameraPriority();
             }
 
             // RSC + Left Shoulder = toggle current players' setting
-            if (rightStickPressed && leftShoulderPressed && now - _lastToggleP1AimTime >= ThrottleMs)
+            if (rightStickPressed && leftShoulderPressed && now - _timeSinceLastToggle >= ThrottleMs)
             {
-                _lastToggleP1AimTime = now;
+                _timeSinceLastToggle = now;
                 TogglePlayerAimsCamera(playerIdx);
             }
         }

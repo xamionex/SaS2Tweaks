@@ -68,74 +68,76 @@ public class SaS2Tweaks : BasePlugin
     {
         var order = 0;
 
+        string cat;
+
         // Stat Regen
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.HealthRegenRate, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.HealthRegenRate, cat = "Tweaks - Regen",
             "HP Regen Rate", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.StaminaRegenRate, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.StaminaRegenRate, cat,
             "Stamina Regen Rate", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.ManaRegenRate, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.ManaRegenRate, cat,
             "Mana Regen Rate", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.RageRegenRate, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.RageRegenRate, cat,
             "Rage Regen Rate", order += 1);
 
         // Consumable Regen
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.HealthPotionRegenEnabled, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.HealthPotionRegenEnabled, cat,
             "Health Potion Auto-Regen", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.HealthPotionRegenDelay, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.HealthPotionRegenDelay, cat,
             "  Health Potion Delay", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.FocusPotionRegenEnabled, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.FocusPotionRegenEnabled, cat,
             "Focus Potion Auto-Regen", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.FocusPotionRegenDelay, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.FocusPotionRegenDelay, cat,
             "  Focus Potion Delay", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.RangedAmmoRegenEnabled, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.RangedAmmoRegenEnabled, cat,
             "Ammo Auto-Regen", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.RangedAmmoRegenDelay, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.RangedAmmoRegenDelay, cat,
             "  Ammo Regen Delay", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.GrayPearlRegenEnabled, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.GrayPearlRegenEnabled, cat,
             "Gray Pearl Auto-Regen", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.GrayPearlRegenDelay, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.GrayPearlRegenDelay, cat,
             "  Gray Pearl Delay", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.GrayPearlRegenLimit, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.GrayPearlRegenLimit, cat,
             "  Gray Pearl Limit", order += 1);
 
         // General / Damage
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.DoNotDropSaltOnDeath, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.DoNotDropSaltOnDeath, cat = "Tweaks - Combat",
             "No Salt Drop on Death", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.MouseCursorInversionDisabled, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.MouseCursorInversionDisabled, cat,
             "Disable Cursor Inversion", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.PlayerDamageMultiplier, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.PlayerDamageMultiplier, cat,
             "Player Damage Multiplier", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.PlayerDefenseMultiplier, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.PlayerDefenseMultiplier, cat,
             "Player Defense Multiplier", order += 1);
 
         // Combat Tweaks
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.ParryWindowFrames, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.ParryWindowFrames, cat,
             "Parry Window (frames)", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.ParryCooldown, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.ParryCooldown, cat,
             "Parry Cooldown (sec)", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.BlockStaminaMultiplier, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.BlockStaminaMultiplier, cat,
             "Block Stamina Multiplier", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.DropRateMultiplier, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.DropRateMultiplier, cat,
             "Drop Rate Multiplier", order += 1);
 
         // Debug
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.DebugInfoEnabled, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.DebugInfoEnabled, "Tweaks - Debug",
             "Debug Overlay", order += 1);
 
         // Co-op
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.P2CanTriggerDoors, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.P2CanTriggerDoors, cat = "Tweaks - Coop",
             "P2 Can Trigger Doors", order += 1);
 
         // Camera
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player1AimsCamera, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player1AimsCamera, cat,
             "P1 Aims Camera", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player2AimsCamera, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player2AimsCamera, cat,
             "P2 Aims Camera", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.CameraPriority, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.CameraPriority, cat,
             "Camera Priority", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player1MovesCameraWhenAiming, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player1MovesCameraWhenAiming, cat,
             "P1 Moves Camera When Aiming", order += 1);
-        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player2MovesCameraWhenAiming, PluginInfo.PluginName,
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player2MovesCameraWhenAiming, cat,
             "P2 Moves Camera When Aiming", order += 1);
     }
 
