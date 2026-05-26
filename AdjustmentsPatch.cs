@@ -224,14 +224,16 @@ internal static class AdjustmentsPatch
         Text.DrawText(sb, new Vector2(100f, 220f), Color.White, 0.3f, 0);
     }
 
-    // Mouse cursor inversion disable
+    // Mouse cursor inversion disable.
     //
-    // MouseMgr.Draw uses two rotation constants for the left-half-of-screen
-    // cursor inversion:
-    //   -0.7853982  (-π/4)  <- the inversion angle applied on the left side
-    //    1.570796   ( π/2)  <- the normal "pointing up" rotation
+    // MouseMgr.Draw uses two rotation constants for the left-half-of-screen cursor inversion:
+    //   -0.7853982 (-π/4)  -- the inversion angle applied on the left side.
+    //    1.570796  ( π/2)  -- the normal "pointing up" rotation.
     //
-    // We intercept every occurrence of either constant and pass it through GlobalSettings.CursorAngle(float), which replaces -π/4 with π/2 when inversion is disabled so both sides of the screen use the same angle.
+    // We intercept every occurrence of either constant,
+    // and pass it through GlobalSettings.CursorAngle(float),
+    // which replaces -π/4 with π/2 when inversion is disabled,
+    // so both sides of the screen use the same angle.
     [HarmonyTranspiler]
     [HarmonyPatch(typeof(MouseMgr), "Draw")]
     private static IEnumerable<CodeInstruction> MouseMgrDraw_Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -244,7 +246,8 @@ internal static class AdjustmentsPatch
             {
                 if (Math.Abs(f - -0.7853982f) < 0.001f || Math.Abs(f - 1.570796f) < 0.001f)
                 {
-                    // push the vanilla float, then call CursorAngle(float) -> returns either the same value (inversion on) or the corrected angle (off)
+                    // push the vanilla float, then call CursorAngle(float),
+                    // which returns either the same value (inversion on) or the corrected angle (off)
                     yield return instr;
                     yield return new CodeInstruction(OpCodes.Call, cursorAngleMethod);
                     continue;

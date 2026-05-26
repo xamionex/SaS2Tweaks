@@ -160,7 +160,9 @@ internal static class CoopInputPatch
         SpriteTools.End();
     }
 
-    // Toggle for a specific player: if camera already follows that player -> Midpoint, else -> that player.
+    // Toggle for a specific player.
+    // If the camera already follows that player, switch to Midpoint.
+    // Otherwise, switch to that player.
     private static void TogglePriorityForPlayer(int playerIdx)
     {
         var current = GlobalSettings.CameraPriority.Value;
@@ -186,7 +188,7 @@ internal static class CoopInputPatch
         ShowMessage(newMode);
     }
 
-    // Cycle: Midpoint -> Player1 -> Player2 -> Midpoint
+    // Cycle order: Midpoint, then Player1, then Player2, then back to Midpoint.
     private static void CycleCameraPriority()
     {
         var current = GlobalSettings.CameraPriority.Value;

@@ -8,24 +8,24 @@ using ProjectMage.player;
 
 namespace SaS2Tweaks;
 
-/// P2 triggering layer-change doors<br />
-/// <br />
-/// CharMovement.MoveCoopPlayers(int pLayer, Vector2 pLoc) is private.<br />
-/// [HarmonyTargetMethod] is used to point at it without a string literal.<br />
-/// <br />
-/// Inside the method, "this.c.loc = pLoc" appears in three places:<br />
-///   1. Screen-edge constraint (less than 5 % or greater than 95 % of scroll width).<br />
-///   2. PVP-mode reset.<br />
-///   3. TARGET: "else if (GetLocalCoopPlayer().ID == playerIdx)" branch.<br />
-///<br />
-/// We count calls to GetLocalCoopPlayer(). The 3rd call is the condition-check<br />
-/// for that else-if branch. The very next "stfld Character::loc" after that<br />
-/// 3rd call is the assignment we want to intercept.<br />
-///<br />
-/// At that point the evaluation stack holds exactly:<br />
-/// [Character (this.c), Vector2 (pLoc)]<br />
-/// HandleP2LayerChange(Character, Vector2) -> void consumes the same two values,<br />
-/// so we can do a straight one-for-one replacement of stfld -> call.<br />
+/// P2 triggering layer-change doors
+/// 
+/// CharMovement.MoveCoopPlayers(int pLayer, Vector2 pLoc) is private.
+/// [HarmonyTargetMethod] is used to point at it without a string literal.
+/// 
+/// Inside the method, "this.c.loc = pLoc" appears in three places:
+///   1. Screen-edge constraint (less than 5 % or greater than 95 % of scroll width).
+///   2. PVP-mode reset.
+///   3. TARGET: "else if (GetLocalCoopPlayer().ID == playerIdx)" branch.
+///
+/// We count calls to GetLocalCoopPlayer(). The 3rd call is the condition-check
+/// for that else-if branch. The very next "stfld Character::loc" after that
+/// 3rd call is the assignment we want to intercept.
+///
+/// At that point the evaluation stack holds exactly:
+/// [Character (this.c), Vector2 (pLoc)]
+/// HandleP2LayerChange(Character, Vector2) consumes the same two values,
+/// so we can do a straight one-for-one replacement of stfld with call.
 [HarmonyPatch]
 internal static class CoopDoorPatch
 {

@@ -26,9 +26,11 @@ public static class GlobalSettings
     public static ConfigEntry<bool> Player2MovesCameraWhenAiming;
 
     /// When true, Player 2 can walk through layer-change doors independently.
-    /// Doing so teleports Player 1 to Player 2's new position instead of
-    /// resetting Player 2 back to Player 1.
+    /// Doing so teleports Player 1 to Player 2's new position instead of resetting Player 2 back to Player 1.
     public static ConfigEntry<bool> P2CanTriggerDoors;
+
+    /// When true, opening a menu (inventory, map, etc.) will not teleport the menu-opener to their coop partner.
+    public static ConfigEntry<bool> SuppressMenuTeleport;
 
     /// When true, Player 1's right-stick aim offsets the camera (vanilla).
     /// Set false to stop P1's aim from panning the view.
@@ -51,13 +53,10 @@ public static class GlobalSettings
     // Consumable Regen
     public static ConfigEntry<bool> HealthPotionRegenEnabled;
     public static ConfigEntry<int> HealthPotionRegenDelay;
-
     public static ConfigEntry<bool> FocusPotionRegenEnabled;
     public static ConfigEntry<int> FocusPotionRegenDelay;
-
     public static ConfigEntry<bool> RangedAmmoRegenEnabled;
     public static ConfigEntry<int> RangedAmmoRegenDelay;
-
     public static ConfigEntry<bool> GrayPearlRegenEnabled;
     public static ConfigEntry<int> GrayPearlRegenDelay;
     public static ConfigEntry<int> GrayPearlRegenLimit;
@@ -70,11 +69,13 @@ public static class GlobalSettings
     public static ConfigEntry<float> PlayerDamageMultiplier;
     public static ConfigEntry<float> PlayerDefenseMultiplier;
 
-    // Combat Tweaks
-    /// Perfect-parry window, expressed in frames at 60 fps. Default 9 = 0.15 s (vanilla).
+    // Combat
+    /// Perfect-parry window, expressed in frames at 60 fps.
+    /// Default 9 = 0.15 s (vanilla).
     public static ConfigEntry<int> ParryWindowFrames;
 
-    /// Seconds before the player can parry again. Default 1.0 (vanilla).
+    /// Seconds before the player can parry again.
+    /// Default 1.0 (vanilla).
     public static ConfigEntry<float> ParryCooldown;
 
     /// Multiplier applied to the block-stamina value returned by the equipped weapon.
@@ -88,23 +89,11 @@ public static class GlobalSettings
     // Debug
     public static ConfigEntry<bool> DebugInfoEnabled;
 
-    // Helpers used by transpilers at runtime
+    // -- Transpiler helpers ----------------------------------------------------
 
-    /// <summary>
     /// Adjusts a vanilla cursor angle based on mouse cursor inversion settings.
-    /// </summary>
-    /// <param name="vanillaAngle">
-    /// The original cursor angle in radians, typically provided by the game engine.
-    /// </param>
-    /// <returns>
-    /// The adjusted cursor angle in radians. If inversion is disabled, the original angle is returned.
-    /// When inversion is enabled, special handling is applied for the right-side angle (-π/4) and left-side subtractor (π/2):
-    /// <list type="bullet">
-    /// <item>If the input angle is approximately -π/4, returns -π/4 - π/2 = -3π/4.</item>
-    /// <item>If the input angle is approximately π/2, returns 0.</item>
-    /// <item>Otherwise, returns the original angle unchanged.</item>
-    /// </list>
-    /// </returns>
+    /// When inversion is disabled, replaces the right-side constant with the left-side one,
+    /// so the cursor sprite points the same direction on both halves of the screen.
     public static float CursorAngle(float vanillaAngle)
     {
         if (MouseCursorInversionDisabled?.Value != true)
@@ -113,17 +102,18 @@ public static class GlobalSettings
         const float rightSideAngle = -0.7853982f; // -π/4
         const float leftSideSubtract = 1.570796f; //  π/2
 
-        // If this is the right-side constant, return the fixed angle.
+        // Right-side constant: return the combined left-side angle.
         if (Math.Abs(vanillaAngle - rightSideAngle) < 0.0001f)
             return rightSideAngle - leftSideSubtract;
 
-        // If this is the left-side subtractor, return 0 to cancel subtraction.
-        // Any other val gets returned normally
+        // Left-side subtractor: return 0 to cancel the subtraction.
+        // Any other value passes through unchanged.
         return Math.Abs(vanillaAngle - leftSideSubtract) < 0.0001f ? 0f : vanillaAngle;
     }
 
-    /// Returns the configured drop-rate multiplier (clamped >= 0).
-    public static float GetDropMultiplier() => DropRateMultiplier?.Value is { } v and > 0f ? v : 1f;
+    /// Returns the configured drop-rate multiplier (clamped to at least 0).
+    public static float GetDropMultiplier() =>
+        DropRateMultiplier?.Value is { } v and > 0f ? v : 1f;
 
     public static void Bind(ConfigFile cfg)
     {
@@ -147,19 +137,16 @@ public static class GlobalSettings
         HealthPotionRegenDelay = cfg.Bind("Health Potion", "Regen Delay (sec)", 600,
             new ConfigDescription("Seconds between each auto-refilled health potion.",
                 new AcceptableValueRange<int>(10, 36000)));
-
         FocusPotionRegenEnabled = cfg.Bind("Focus Potion", "Enable Regen", false,
             "Automatically refill one focus potion every N seconds.");
         FocusPotionRegenDelay = cfg.Bind("Focus Potion", "Regen Delay (sec)", 600,
             new ConfigDescription("Seconds between each auto-refilled focus potion.",
                 new AcceptableValueRange<int>(10, 36000)));
-
         RangedAmmoRegenEnabled = cfg.Bind("Ranged Ammo", "Enable Regen", false,
             "Automatically add one arrow every N seconds.");
         RangedAmmoRegenDelay = cfg.Bind("Ranged Ammo", "Regen Delay (sec)", 120,
             new ConfigDescription("Seconds between each auto-refilled arrow.",
                 new AcceptableValueRange<int>(10, 36000)));
-
         GrayPearlRegenEnabled = cfg.Bind("Gray Pearl", "Enable Regen", false,
             "Automatically add one gray pearl every N seconds (up to the limit).");
         GrayPearlRegenDelay = cfg.Bind("Gray Pearl", "Regen Delay (sec)", 300,
@@ -183,7 +170,7 @@ public static class GlobalSettings
             new ConfigDescription("Multiplies all player defense values. 2 = double defence.",
                 new AcceptableValueRange<float>(0f, 50f)));
 
-        // Combat Tweaks
+        // Combat
         ParryWindowFrames = cfg.Bind("Combat", "Parry Window (frames)", 9,
             new ConfigDescription(
                 "Duration of the perfect-parry window in frames at 60 fps. Vanilla = 9 (0.15 s).",
@@ -209,21 +196,28 @@ public static class GlobalSettings
 
         // Co-op
         P2CanTriggerDoors = cfg.Bind("Co-op", "P2 Can Trigger Doors", true,
-            "When enabled, Player 2 can walk through layer-change doors independently. Player 1 is teleported to Player 2's destination instead of P2 being snapped back.");
+            "When enabled, Player 2 can walk through layer-change doors independently. " +
+            "Player 1 is teleported to Player 2's destination instead of P2 being snapped back.");
+        SuppressMenuTeleport = cfg.Bind("Co-op", "Suppress Menu Teleport", true,
+            "When enabled, opening a menu (inventory, map, etc.) will not teleport " +
+            "the menu-opener to their coop partner.");
 
         // Camera
         Player1AimsCamera = cfg.Bind("Camera", "Player1 Aims Camera", true,
             "When true (vanilla), Player 1's right stick pans the camera while aiming. " +
             "Set false to prevent P1's aim from moving the view.");
         Player2AimsCamera = cfg.Bind("Camera", "Player2 Aims Camera", false,
-            "When true, Player 2's right stick also pans the shared camera while aiming. Has no effect outside local co-op, or when Player 2 is dead.");
+            "When true, Player 2's right stick also pans the shared camera while aiming.");
         CameraPriority = cfg.Bind("Camera", "Camera Priority", CameraPriorityMode.Midpoint,
-            "Controls which player the co-op camera centres on.\n Midpoint, vanilla: halfway between both players.\n Player1, camera follows Player 1.\n Player2, camera follows Player 2.");
-
+            "Controls which player the co-op camera centres on.\n" +
+            " Midpoint, vanilla: halfway between both players.\n" +
+            " Player1, camera follows Player 1.\n Player2, camera follows Player 2.");
         Player1MovesCameraWhenAiming = cfg.Bind("Camera", "P1 Moves Camera When Aiming", false,
-            "When true, aiming a bow moves the camera toward the aim direction.\nFalse keeps the camera fixed on the player.");
-
+            "When true, aiming a bow moves the camera toward the aim direction.\n" +
+            "False keeps the camera fixed on the player.");
         Player2MovesCameraWhenAiming = cfg.Bind("Camera", "P2 Moves Camera When Aiming", false,
-            "When true, aiming a bow moves the camera toward the aim direction.\nFalse keeps the camera fixed on the player.");
+            "When true, aiming a bow moves the camera toward the aim direction.\n" +
+            "False keeps the camera fixed on the player.");
+
     }
 }

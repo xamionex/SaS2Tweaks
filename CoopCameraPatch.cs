@@ -9,25 +9,25 @@ using ProjectMage.player;
 
 namespace SaS2Tweaks;
 
-/// Camera aim + priority<br />
-/// <br />
-/// Only Player 0 calls camMgr.Update (Player.cs l.373). Inside Update:<br />
-/// character  = P1's Character (first GetCharacter() result)<br />
-/// character2 = P2's Character (assigned as null, then set in coop mode)<br />
-/// <br />
-/// P1 look-scale:<br />
-/// Pattern: ldfld CharKeys.lookVec -> ldc.r4 500f<br />
-/// Action:  replace 500f -> call GetP1LookScale()  (returns 500 or 0)<br />
-/// <br />
-/// P2 look injection:<br />
-/// After the stloc that stores "vector += lookVec * scale", inject:<br />
-/// vector = AddP2LookVec(vector, character2)<br />
-/// The local-variable slots for 'vector' and 'character2' are found at runtime in a pre-scan pass.<br />
-/// <br />
-/// Camera priority:<br />
-/// Pattern: ldc.r4 2f -> call Vector2.op_Division (the /2f in midpoint)<br />
-/// Action:  emit op_Division as normal, then inject: call AdjustCameraBase(Vector2) -> Vector2<br />
-/// The game's own "+ new Vector2(0, -100f)" continues unmodified.<br />
+/// Camera aim + priority
+/// 
+/// Only Player 0 calls camMgr.Update (Player.cs l.373). Inside Update:
+/// character  = P1's Character (first GetCharacter() result)
+/// character2 = P2's Character (assigned as null, then set in coop mode)
+/// 
+/// P1 look-scale:
+/// Pattern: ldfld CharKeys.lookVec, then ldc.r4 500f
+/// Action:  replace 500f with call GetP1LookScale() (returns 500 or 0)
+/// 
+/// P2 look injection:
+/// After the stloc that stores "vector += lookVec * scale", inject:
+/// vector = AddP2LookVec(vector, character2)
+/// The local-variable slots for 'vector' and 'character2' are found at runtime in a pre-scan pass.
+/// 
+/// Camera priority:
+/// Pattern: ldc.r4 2f, then call Vector2.op_Division (the /2f in midpoint)
+/// Action:  emit op_Division as normal, then inject call AdjustCameraBase(Vector2) returning Vector2
+/// The game's own "+ new Vector2(0, -100f)" continues unmodified.
 [HarmonyPatch]
 internal static class CoopCameraPatch
 {
@@ -125,7 +125,7 @@ internal static class CoopCameraPatch
                     divMi.DeclaringType == typeof(Vector2) &&
                     (divMi.Name.Contains("Division") || divMi.Name.Contains("Multiply")))
                 {
-                    yield return instr; // op_Division -> midpoint on stack
+                    yield return instr; // op_Division leaves midpoint on stack
                     yield return new CodeInstruction(OpCodes.Call, adjustBase);
                     camPrioDone = true;
                     prevLdc2F = false;
