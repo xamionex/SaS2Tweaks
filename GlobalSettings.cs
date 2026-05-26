@@ -40,6 +40,21 @@ public static class GlobalSettings
     /// Has no effect outside local co-op, or when Player 2 is dead.
     public static ConfigEntry<bool> Player2AimsCamera;
 
+    // P2 Camera Effect Mirrors (fixes vanilla co-op bug)
+
+    /// Mirrors finisher/riposte/grapple camera effects from P2 to the shared camera.
+    /// Covers CharTrigGore triggers: 23 (heart crush), 24 (subdue die),
+    /// 53 (riposte hit), 54 (riposte final), 100 (grapple dagger).
+    public static ConfigEntry<bool> P2FinisherEffects;
+
+    /// Mirrors hit quakes from P2 to the shared camera.
+    /// Covers all PlayerQuake.SetQuake calls originating from P2.
+    public static ConfigEntry<bool> P2HitEffects;
+
+    /// Also applies dagger/heart execution focus to P2's camMgr.
+    /// Vanilla only focuses the main player's camera.
+    public static ConfigEntry<bool> P2DaggerFocus;
+
     /// Controls which player the camera centres on in local co-op.
     /// Midpoint = vanilla (between both); Player1 = follow P1; Player2 = follow P2.
     public static ConfigEntry<CameraPriorityMode> CameraPriority;
@@ -218,6 +233,17 @@ public static class GlobalSettings
         Player2MovesCameraWhenAiming = cfg.Bind("Camera", "P2 Moves Camera When Aiming", false,
             "When true, aiming a bow moves the camera toward the aim direction.\n" +
             "False keeps the camera fixed on the player.");
+
+        // P2 Camera Effect Mirrors
+        P2FinisherEffects = cfg.Bind("Camera", "P2 Finisher Effects", true,
+            "Mirrors finisher/riposte/grapple camera zoom from P2 to the shared camera. " +
+            "Vanilla applies these only to P1. Automatically disabled in splitscreen.");
+        P2HitEffects = cfg.Bind("Camera", "P2 Hit Effects", true,
+            "Mirrors hit quake from P2 to the shared camera. " +
+            "Vanilla applies these only to the attacker's camera.");
+        P2DaggerFocus = cfg.Bind("Camera", "P2 Dagger Focus", true,
+            "Also applies dagger/heart execution camera focus to P2's camera. " +
+            "Vanilla only focuses the main player's camera.");
 
     }
 }

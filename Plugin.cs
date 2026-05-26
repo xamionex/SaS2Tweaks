@@ -11,6 +11,7 @@ namespace SaS2Tweaks;
 [BepInPlugin(PluginInfo.PluginGuid, PluginInfo.PluginName, PluginInfo.PluginVersion)]
 [BepInDependency("amione.SaS2ModOptions", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("amione.SaS2DevTools", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("amione.SaS2SplitScreen", BepInDependency.DependencyFlags.SoftDependency)]
 // ReSharper disable once ClassNeverInstantiated.Global
 public class SaS2Tweaks : BasePlugin
 {
@@ -138,6 +139,12 @@ public class SaS2Tweaks : BasePlugin
             cat, "P1 Moves Camera When Aiming", order += 1);
         SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.Player2MovesCameraWhenAiming,
             cat, "P2 Moves Camera When Aiming", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.P2FinisherEffects,
+            cat, "P2 Finisher Effects", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.P2HitEffects,
+            cat, "P2 Hit Effects", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.P2DaggerFocus,
+            cat, "P2 Dagger Focus", order += 1);
 
     }
 
