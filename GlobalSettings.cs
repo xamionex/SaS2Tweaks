@@ -101,6 +101,13 @@ public static class GlobalSettings
     /// 1 = vanilla; 2 = double chance; values above ~10 effectively guarantee drops.
     public static ConfigEntry<float> DropRateMultiplier;
 
+    // Keybinds (rebindable combos: keyboard modifier+key and/or gamepad modifier+button).
+    // Backed by string config entries and editable in the Mod Options menu.
+    public static Keybind P1AimsCameraBind;
+    public static Keybind TogglePriorityBind;
+    public static Keybind CyclePriorityBind;
+    public static Keybind TeleportBind;
+
     // Debug
     public static ConfigEntry<bool> DebugInfoEnabled;
 
@@ -204,6 +211,17 @@ public static class GlobalSettings
                 "Multiplier applied to every harvest item drop-chance roll. " +
                 "1 = vanilla; 2 = doubled chance; high values (~10+) near-guarantee drops.",
                 new AcceptableValueRange<float>(0f, 20f)));
+
+        // Keybinds (rebindable combos via Mod Options). Format "KbMod|KbKey|PadMod|PadButton";
+        // gamepad codes: RS=-29, LS=-28, LB=-20, LT=-21, RT=-19, Y=-17.
+        P1AimsCameraBind = new Keybind(cfg.Bind("Keybinds", "P1 Aims Camera", "None|F1|-29|-20",
+            "Toggle 'Player1 Aims Camera'. Default keyboard F1, gamepad RS+LB."));
+        TogglePriorityBind = new Keybind(cfg.Bind("Keybinds", "Toggle Camera Priority", "None|F2|-29|-21",
+            "Toggle camera priority for the pressing player. Default keyboard F2, gamepad RS+LT."));
+        CyclePriorityBind = new Keybind(cfg.Bind("Keybinds", "Cycle Camera Priority", "None|F3|-29|-19",
+            "Cycle camera priority Midpoint -> P1 -> P2. Default keyboard F3, gamepad RS+RT."));
+        TeleportBind = new Keybind(cfg.Bind("Keybinds", "Teleport To Partner", "LeftShift|T|-28|-17",
+            "Teleport to your co-op partner. Default keyboard Shift+T, gamepad LS+Y."));
 
         // Debug
         DebugInfoEnabled = cfg.Bind("Debug", "Show Debug Info", false,

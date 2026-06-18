@@ -146,6 +146,15 @@ public class SaS2Tweaks : BasePlugin
         SaS2ModOptions.SaS2ModOptions.RegisterConfig(GlobalSettings.P2DaggerFocus,
             cat, "P2 Dagger Focus", order += 1);
 
+        // Keybinds (rebindable keyboard + gamepad combos).
+        SaS2ModOptions.SaS2ModOptions.RegisterKeybind(GlobalSettings.TeleportBind.Config,
+            cat = "Tweaks - Keybinds", "Teleport To Partner", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterKeybind(GlobalSettings.P1AimsCameraBind.Config,
+            cat, "P1 Aims Camera", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterKeybind(GlobalSettings.TogglePriorityBind.Config,
+            cat, "Toggle Camera Priority", order += 1);
+        SaS2ModOptions.SaS2ModOptions.RegisterKeybind(GlobalSettings.CyclePriorityBind.Config,
+            cat, "Cycle Camera Priority", order += 1);
     }
 
     public override bool Unload()
