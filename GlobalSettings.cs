@@ -141,42 +141,33 @@ public static class GlobalSettings
     {
         // Stat Regen
         HealthRegenRate = cfg.Bind("Stat Regen", "Health Regen Rate", 0f,
-            new ConfigDescription("HP/s regenerated while alive (0 = off).",
-                new AcceptableValueRange<float>(0f, 20f)));
+            "HP/s regenerated while alive (0 = off).");
         StaminaRegenRate = cfg.Bind("Stat Regen", "Stamina Regen Rate", 2f,
-            new ConfigDescription("Stamina/s added on top of the natural game regen (0 = off).",
-                new AcceptableValueRange<float>(0f, 20f)));
+            "Stamina/s added on top of the natural game regen (0 = off).");
         ManaRegenRate = cfg.Bind("Stat Regen", "Mana Regen Rate", 0f,
-            new ConfigDescription("MP/s regenerated while alive (0 = off).",
-                new AcceptableValueRange<float>(0f, 10f)));
+            "MP/s regenerated while alive (0 = off).");
         RageRegenRate = cfg.Bind("Stat Regen", "Rage Regen Rate", 0f,
-            new ConfigDescription("Rage/s regenerated while alive (0 = off).",
-                new AcceptableValueRange<float>(0f, 10f)));
+            "Rage/s regenerated while alive (0 = off).");
 
         // Consumable Regen
         HealthPotionRegenEnabled = cfg.Bind("Health Potion", "Enable Regen", false,
             "Automatically refill one health potion every N seconds.");
         HealthPotionRegenDelay = cfg.Bind("Health Potion", "Regen Delay (sec)", 600,
-            new ConfigDescription("Seconds between each auto-refilled health potion.",
-                new AcceptableValueRange<int>(10, 36000)));
+            "Seconds between each auto-refilled health potion.");
         FocusPotionRegenEnabled = cfg.Bind("Focus Potion", "Enable Regen", false,
             "Automatically refill one focus potion every N seconds.");
         FocusPotionRegenDelay = cfg.Bind("Focus Potion", "Regen Delay (sec)", 600,
-            new ConfigDescription("Seconds between each auto-refilled focus potion.",
-                new AcceptableValueRange<int>(10, 36000)));
+            "Seconds between each auto-refilled focus potion.");
         RangedAmmoRegenEnabled = cfg.Bind("Ranged Ammo", "Enable Regen", false,
             "Automatically add one arrow every N seconds.");
         RangedAmmoRegenDelay = cfg.Bind("Ranged Ammo", "Regen Delay (sec)", 120,
-            new ConfigDescription("Seconds between each auto-refilled arrow.",
-                new AcceptableValueRange<int>(10, 36000)));
+            "Seconds between each auto-refilled arrow.");
         GrayPearlRegenEnabled = cfg.Bind("Gray Pearl", "Enable Regen", false,
             "Automatically add one gray pearl every N seconds (up to the limit).");
         GrayPearlRegenDelay = cfg.Bind("Gray Pearl", "Regen Delay (sec)", 300,
-            new ConfigDescription("Seconds between each auto-refilled gray pearl.",
-                new AcceptableValueRange<int>(10, 36000)));
+            "Seconds between each auto-refilled gray pearl.");
         GrayPearlRegenLimit = cfg.Bind("Gray Pearl", "Regen Limit", 20,
-            new ConfigDescription("Stop regenerating when you own this many gray pearls.",
-                new AcceptableValueRange<int>(1, 100)));
+            "Stop regenerating when you own this many gray pearls.");
 
         // General
         MouseCursorInversionDisabled = cfg.Bind("General", "Disable Mouse Cursor Inversion", true,
@@ -186,31 +177,25 @@ public static class GlobalSettings
 
         // Damage
         PlayerDamageMultiplier = cfg.Bind("Damage", "Player Damage Multiplier", 1f,
-            new ConfigDescription("Multiplies all outgoing player damage. 2 = double damage.",
-                new AcceptableValueRange<float>(0f, 50f)));
+            "Multiplies all outgoing player damage. 2 = double damage.");
         PlayerDefenseMultiplier = cfg.Bind("Damage", "Player Defense Multiplier", 1f,
-            new ConfigDescription("Multiplies all player defense values. 2 = double defence.",
-                new AcceptableValueRange<float>(0f, 50f)));
+            "Multiplies all player defense values. 2 = double defence.");
 
         // Combat
         ParryWindowFrames = cfg.Bind("Combat", "Parry Window (frames)", 9,
             new ConfigDescription(
-                "Duration of the perfect-parry window in frames at 60 fps. Vanilla = 9 (0.15 s).",
-                new AcceptableValueRange<int>(1, 60)));
+                "Duration of the perfect-parry window in frames at 60 fps. Vanilla = 9 (0.15 s)."));
         ParryCooldown = cfg.Bind("Combat", "Parry Cooldown (sec)", 1f,
             new ConfigDescription(
-                "Seconds the player must wait before they can parry again. Vanilla = 1.0.",
-                new AcceptableValueRange<float>(0f, 10f)));
+                "Seconds the player must wait before they can parry again. Vanilla = 1.0."));
         BlockStaminaMultiplier = cfg.Bind("Combat", "Block Stamina Multiplier", 1f,
             new ConfigDescription(
                 "Multiplier on block-stamina (poise damage reduction while blocking). " +
-                "1 = vanilla; 2 = blocks absorb twice as much poise damage.",
-                new AcceptableValueRange<float>(0f, 5f)));
+                "1 = vanilla; 2 = blocks absorb twice as much poise damage."));
         DropRateMultiplier = cfg.Bind("Loot", "Drop Rate Multiplier", 1f,
             new ConfigDescription(
                 "Multiplier applied to every harvest item drop-chance roll. " +
-                "1 = vanilla; 2 = doubled chance; high values (~10+) near-guarantee drops.",
-                new AcceptableValueRange<float>(0f, 20f)));
+                "1 = vanilla; 2 = doubled chance; high values (~10+) near-guarantee drops."));
 
         // Keybinds (rebindable combos via Mod Options). Format "KbMod|KbKey|PadMod|PadButton";
         // gamepad codes: RS=-29, LS=-28, LB=-20, LT=-21, RT=-19, Y=-17.
